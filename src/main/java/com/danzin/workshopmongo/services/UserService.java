@@ -1,6 +1,7 @@
 package com.danzin.workshopmongo.services;
 
 import com.danzin.workshopmongo.domain.User;
+import com.danzin.workshopmongo.dto.UserDTO;
 import com.danzin.workshopmongo.repository.UserRepository;
 import com.danzin.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,13 @@ public class UserService {
     public User findById(String id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+    }
+
+    public User insert(User user) {
+        return userRepository.insert(user);
+    }
+
+    public User fromDTO(UserDTO userDTO) {
+        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
     }
 }
