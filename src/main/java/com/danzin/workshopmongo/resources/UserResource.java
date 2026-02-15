@@ -47,7 +47,7 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@RequestBody  UserDTO userDTO, @PathVariable String id) {
+    public ResponseEntity<Void> update(@RequestBody  UserDTO userDTO, @PathVariable String id) { //Atualiza o usuario por id no postman
         User user = userService.fromDTO(userDTO);
         user.setId(id);
         user = userService.update(user);
