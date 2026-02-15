@@ -1,5 +1,6 @@
 package com.danzin.workshopmongo.resources;
 
+import com.danzin.workshopmongo.domain.Post;
 import com.danzin.workshopmongo.domain.User;
 import com.danzin.workshopmongo.dto.UserDTO;
 import com.danzin.workshopmongo.services.UserService;
@@ -52,6 +53,12 @@ public class UserResource {
         user.setId(id);
         user = userService.update(user);
       return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok().body(user.getPosts()); //Mudar para DTO
     }
 
 }
