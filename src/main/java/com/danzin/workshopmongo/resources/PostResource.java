@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -31,5 +32,20 @@ public class PostResource {
         List<Post> list = postService.findByTitle(text);
         return ResponseEntity.ok().body(list); //Mudar para DTO
     }
+
+    //Busca por textos nos comentarios e etc
+    @GetMapping(value = "/fullsearch") //http://localhost:8080/posts/fullsearch?text=bom&maxDate=2026-02-15 , http://localhost:8080/posts/fullsearch?text=aproveite&maxDate=2026-02-15 ,  http://localhost:8080/posts/fullsearch?text=aproveite&maxDate=2018-03-21&maxDate=2026-02-15
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate
+            ) {
+        text = URL.decodeParam(text);
+        LocalDateTime min = URL.convertDate(minDate, LocalDateTime.MIN); //Data minima do java
+        LocalDateTime max = URL.convertDate(maxDate, LocalDateTime.now());
+        List<Post> list = postService.fullSearch(text, min , max);
+        return ResponseEntity.ok().body(list); //Mudar para DTO
+    }
+
 
 }
